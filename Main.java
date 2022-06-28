@@ -24,9 +24,16 @@ public class Main{
 
         try(FileWriter scrittore = new FileWriter(".\\src\\Dati\\json.json");){ //crezione file
             scrittore.write(file.toJSONString());
-            System.out.println("scrittura avvenuta con successo");
-        }catch(Exception e){
-            System.err.println("errore nella scrittura del file");
+        }catch(Exception e){}
+
+
+
+        //lettura 
+        try {
+            String cognome=(String) identita.get("Elia");
+            System.out.println(cognome);
+        } catch (Exception e) {
+            System.err.println("nope");
         }
     }
 }
