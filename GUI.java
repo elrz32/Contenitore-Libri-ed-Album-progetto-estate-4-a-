@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -15,12 +14,14 @@ import javax.swing.JTextField;
 public class GUI extends JFrame{
 
     private JPanel contenitore,nord,sud,centro;
+    private JPanel elencoVisivoLibri,elencoVisivoAlbum;
     private BufferedImage contenitoreImmagine;
     private JLabel scrittaNord,scrittaSud, tabellaMostraImmagine;
     private JButton ritornoHome,catalogoLibri,catalogoAlbum,aggiungiLibro,creaLibro,aggiungiAlbum,creaAlbum;
     private boolean immagineMessa;
-    private JTextField titolo,autore,anno,numeroPagine,commento,numeroMusiche,genere;
-    //private ??? voto (va 1 a 5 stelle) TODO
+    private int numLibro,numAlbum;
+    private JTextField titolo,autore,anno,numeroPagine,commento,numeroMusiche,genere,voto;
+
 
     public GUI(){
         this.setTitle("contenitore album ecc");
@@ -42,6 +43,10 @@ public class GUI extends JFrame{
         contenitore.add(sud,BorderLayout.SOUTH);
         contenitore.add(centro,BorderLayout.CENTER);
 
+        //elenchi visivi
+        elencoVisivoAlbum=new JPanel();
+        elencoVisivoLibri=new JPanel();
+
         scrittaNord=new JLabel();
         scrittaSud=new JLabel();
         ritornoHome=new JButton();
@@ -54,24 +59,33 @@ public class GUI extends JFrame{
         tabellaMostraImmagine=new JLabel();
         titolo=new JTextField(30);
         autore=new JTextField(30);
-        anno=new JTextField(30);
+        anno=new JTextField(10);
         genere=new JTextField(30);
-        numeroMusiche=new JTextField(30);
-        numeroPagine=new JTextField(30);
+        numeroMusiche=new JTextField(10);
+        numeroPagine=new JTextField(10);
         commento=new JTextField(30);
+        voto=new JTextField(10);
+        
         immagineMessa=false;
+
+        numAlbum=0;
+        numLibro=0;
+
         homePage();
         this.add(contenitore);
         this.setVisible(true);
     }
 
     public void homePage(){
+        elencoVisivoAlbum.setVisible(false);
+        elencoVisivoLibri.setVisible(false);
         catalogoAlbum.setVisible(true);
         catalogoLibri.setVisible(true);
         ritornoHome.setVisible(false);
         aggiungiLibro.setVisible(false);
         aggiungiAlbum.setVisible(false);
         creaLibro.setVisible(false);
+        creaAlbum.setVisible(false);
         titolo.setVisible(false);
         autore.setVisible(false);
         anno.setVisible(false);
@@ -79,6 +93,7 @@ public class GUI extends JFrame{
         numeroMusiche.setVisible(false);
         commento.setVisible(false);
         numeroPagine.setVisible(false);
+        voto.setVisible(false);
 
         scrittaNord.setText("CONTENITORE DI ALBUM E DI LIBRI");
         scrittaNord.setVisible(true);
@@ -131,6 +146,7 @@ public class GUI extends JFrame{
     }
 
     public void mostraLibri(){
+        elencoVisivoLibri.setVisible(true);
         scrittaNord.setText("Elenco dei libri presenti");
         ritornoHome.setVisible(true);
         ritornoHome.setText("Torna alla schermata Home"); 
@@ -150,10 +166,12 @@ public class GUI extends JFrame{
             }
         });
         aggiungiLibro.setVisible(true);
+        centro.add(elencoVisivoLibri);
         centro.add(aggiungiLibro);
     }
 
     public void mostraAlbum(){
+        elencoVisivoAlbum.setVisible(true);
         scrittaNord.setText("Elenco degli album presenti");
         ritornoHome.setText("Torna alla schermata Home");
         ritornoHome.setVisible(true);
@@ -174,61 +192,74 @@ public class GUI extends JFrame{
             }
         });
         aggiungiAlbum.setVisible(true);
+        centro.add(elencoVisivoAlbum);
         centro.add(aggiungiAlbum);
     }
 
     public void creaLibro(){
+        elencoVisivoLibri.setVisible(false);
         titolo.setVisible(true);
         autore.setVisible(true);
         anno.setVisible(true);
         genere.setVisible(true);
         commento.setVisible(true);
         numeroPagine.setVisible(true);
-        aggiungiLibro.setVisible(true);
-        scrittaNord.setText("Inserisci i dati del tuo libro");
-        creaLibro.setText("aggiungi il libro");
-        creaLibro.addActionListener(new ActionListener() {
-			@Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO immetto il libro nella lista
-            }
-        });
-        creaLibro.setVisible(true);
-        sud.add(creaLibro);
-        //TODO schermata di aggiunta libro
         centro.add(titolo);
         centro.add(autore);
         centro.add(anno);
         centro.add(genere);
         centro.add(numeroPagine);
         centro.add(commento);
+        aggiungiLibro.setVisible(false);
+        voto.setVisible(true);
+        scrittaNord.setText("Inserisci i dati del tuo libro");
+        creaLibro.setText("aggiungi il libro");
+        creaLibro.addActionListener(new ActionListener() {
+			@Override
+            public void actionPerformed(ActionEvent e) {
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                numLibro++;
+                CreazioneLibro albumCreatoProva=new CreazioneLibro(numLibro, "autore", "titolo", "genere", "commento", 4, 1984, 400);
+                JTextArea lla=albumCreatoProva.getText();
+                elencoVisivoLibri.add(lla); //così facendo l'arraylist conterrà tutti i pannelli TODO
+                
+                //TODO immetto il libro nella lista che sarà disponibile da vedere solo nelle schermate di aggiunta album e libri
+            }
+        });
+        creaLibro.setVisible(true);
+        sud.add(creaLibro);
+        //TODO schermata di aggiunta libro
+        
     }
 
     public void creaAlbum(){
+        elencoVisivoAlbum.setVisible(false);
         titolo.setVisible(true);
         autore.setVisible(true);
         anno.setVisible(true);
         genere.setVisible(true);
         numeroMusiche.setVisible(true);
         commento.setVisible(true);
-
-        aggiungiAlbum.setVisible(false);
-        scrittaNord.setText("Inserisci i dati del tuo album");
-        creaAlbum.setText("aggiungi l'album");
-        creaAlbum.addActionListener(new ActionListener() {
-			@Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO immetto l'album nella lista
-            }
-        });
-        creaAlbum.setVisible(true);
-        sud.add(creaAlbum);
-        //TODO schermata aggiunta album
+        voto.setVisible(true);
         centro.add(titolo);
         centro.add(autore);
         centro.add(anno);
         centro.add(genere);
         centro.add(numeroMusiche);
         centro.add(commento);
+        aggiungiAlbum.setVisible(false);
+        scrittaNord.setText("Inserisci i dati del tuo album");
+        creaAlbum.setText("aggiungi l'album");
+        creaAlbum.addActionListener(new ActionListener() {
+			@Override
+            public void actionPerformed(ActionEvent e) {
+                numAlbum++;
+                //TODO immetto l'album nella lista
+            }
+        });
+        creaAlbum.setVisible(true);
+        sud.add(creaAlbum);
+        //TODO schermata aggiunta album
+        
     }
 }
