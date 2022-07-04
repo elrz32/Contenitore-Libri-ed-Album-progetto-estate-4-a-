@@ -6,10 +6,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class CreazioneAlbum {
-    private String autore,titolo,genere,commento;
-    private int voto, anno,numeroMusiche,numero;
+    private String autore,titolo,genere,commento,voto, anno,numeroMusiche;
+    private int numero;
 
-    public CreazioneAlbum(int numero,String autore,String titolo,String genere,String commento,int voto,int anno,int numeroMusiche){
+    public CreazioneAlbum(int numero,String autore,String titolo,String genere,String commento,String voto,String anno,String numeroMusiche){
         this.numero=numero;
         this.titolo=titolo;
         this.autore=autore;
@@ -36,15 +36,15 @@ public class CreazioneAlbum {
         return commento;
     }
 
-    public int getVoto(){
+    public String getVoto(){
         return voto;
     }
 
-    public int getAnno(){
+    public String getAnno(){
         return anno;
     }
 
-    public int getNumeroMusiche(){
+    public String getNumeroMusiche(){
         return numeroMusiche;
     }
 
@@ -53,10 +53,11 @@ public class CreazioneAlbum {
     }
 
 
-    public JTextArea geText(){
+    public JTextArea getText(){
         JSONArray file=new JSONArray();
         
-        JSONObject autore=new JSONObject(),titolo=new JSONObject(),genere=new JSONObject(),commento=new JSONObject(),anno=new JSONObject(),voto=new JSONObject(),numeroMusiche=new JSONObject();
+        JSONObject numero=new JSONObject(),autore=new JSONObject(),titolo=new JSONObject(),genere=new JSONObject(),commento=new JSONObject(),anno=new JSONObject(),voto=new JSONObject(),numeroMusiche=new JSONObject();
+        numero.put("numeroIdentificativo", getNumero());
         titolo.put("titolo", getTitolo());
         autore.put("autore", getAutore());
         genere.put("genere", getGenere());
@@ -74,14 +75,14 @@ public class CreazioneAlbum {
         file.add(anno);
         file.add(numeroMusiche);
 
-        try(FileWriter scrittore = new FileWriter(".\\src\\Dati\\Album\\album"+numero+".json");){ //crezione file
+        try(FileWriter scrittore = new FileWriter(".\\src\\Dati\\Album\\album"+getNumero()+".json");){ //crezione file
             scrittore.write(file.toJSONString());
         }catch(Exception e){}
         
         //ritorno dei dati
         JTextArea text=new JTextArea();
         text.setEditable(false);
-        text.setText(numero+") "+getTitolo()+" "+getAutore()+" "+getGenere()+" "+getCommento()+" "+getVoto()+" "+getAnno()+" "+getNumeroMusiche());
+        text.setText(getNumero()+") Titolo:"+getTitolo()+" Autore:"+getAutore()+" Genere:"+getGenere()+" Commento:"+getCommento()+" Voto:"+getVoto()+" Anno:"+getAnno()+" NumeroMusiche:"+getNumeroMusiche());
         return text;
     }
 }

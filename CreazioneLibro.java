@@ -6,10 +6,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class CreazioneLibro {
-    private String autore,titolo,genere,commento;
-    private int voto, anno,numeroPagine,numero;
+    private String autore,titolo,genere,commento,voto, anno,numeroPagine;
+    private int numero;
 
-    public CreazioneLibro(int numero,String autore,String titolo,String genere,String commento,int voto,int anno, int numeroPagine){
+    public CreazioneLibro(int numero,String autore,String titolo,String genere,String commento,String voto,String anno, String numeroPagine){
         this.numero=numero;
         this.titolo=titolo;
         this.autore=autore;
@@ -36,15 +36,15 @@ public class CreazioneLibro {
         return commento;
     }
 
-    public int getVoto(){
+    public String getVoto(){
         return voto;
     }
 
-    public int getAnno(){
+    public String getAnno(){
         return anno;
     }
 
-    public int getNumeroPagine(){
+    public String getNumeroPagine(){
         return numeroPagine;
     }
 
@@ -52,10 +52,11 @@ public class CreazioneLibro {
         return numero;
     }
 
+
     public JTextArea getText(){
-        //creazione file Json
         JSONArray file=new JSONArray(); 
-        JSONObject autore=new JSONObject(),titolo=new JSONObject(),genere=new JSONObject(),commento=new JSONObject(),anno=new JSONObject(),voto=new JSONObject(),numeroPagine=new JSONObject();
+        JSONObject numero=new JSONObject(),autore=new JSONObject(),titolo=new JSONObject(),genere=new JSONObject(),commento=new JSONObject(),anno=new JSONObject(),voto=new JSONObject(),numeroPagine=new JSONObject();
+        numero.put("numeroIdentificativo", getNumero());
         titolo.put("titolo", getTitolo());
         autore.put("autore", getAutore());
         genere.put("genere", getGenere());
@@ -72,14 +73,13 @@ public class CreazioneLibro {
         file.add(anno);
         file.add(numeroPagine);
 
-        try(FileWriter scrittore = new FileWriter(".\\src\\Dati\\Libri\\libro"+numero+".json");){ //crezione file
+        try(FileWriter scrittore = new FileWriter(".\\src\\Dati\\Libri\\libro"+getNumero()+".json");){ //crezione file
             scrittore.write(file.toJSONString());
         }catch(Exception e){}
-
         //ritorno dei dati
         JTextArea text=new JTextArea();
         text.setEditable(false);
-        text.append(numero+") "+getTitolo()+" "+getAutore()+" "+getGenere()+" "+getCommento()+" "+getVoto()+" "+getAnno()+" "+getNumeroPagine());
+        text.append(getNumero()+") Titolo:"+getTitolo()+" Autore:"+getAutore()+" Genere:"+getGenere()+" Commento:"+getCommento()+" Voto:"+getVoto()+" Anno:"+getAnno()+" NumeroPagine:"+getNumeroPagine());
         return text;
     }
 }
