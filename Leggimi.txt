@@ -1,0 +1,2 @@
+mettere il seguente file nella repository src del proprio compilatore
+Non modificare i file (onde evitare errori)
